@@ -5,9 +5,15 @@ import {CommandBus, Command, Middleware} from '../src';
 import * as assert from 'assert';
 
 describe('CommandBus', () => {
+
+    let sampleCommand = {
+        id: 'completeOrder',
+        orderId: 1
+    }
+
     it('handles message even if no middleware has been registered ', async () => {
         const bus = new CommandBus();
-        await bus.handle('message');
+        await bus.handle(sampleCommand);
     });
 
     it('executes registered middlewares in order', async () => {
@@ -19,20 +25,13 @@ describe('CommandBus', () => {
             new CallbackMiddleware(cb('Middleware #3')),
         ]);
         
-        await bus.handle('message');
+        await bus.handle(sampleCommand);
         assert.equal(arr[0], 'Middleware #1');
         assert.equal(arr[1], 'Middleware #2');
         assert.equal(arr[2], 'Middleware #3');
     });
 
 });
-
-class TestCommand implements Command
-{
-    constructor(public name: string)
-    {
-    }
-}
 
 class CallbackMiddleware implements Middleware
 {
