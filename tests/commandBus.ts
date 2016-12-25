@@ -4,7 +4,7 @@
 import {CommandBus, Command, Middleware} from '../src';
 import * as assert from 'assert';
 
-describe('MessageBus', () => {
+describe('CommandBus', () => {
     it('handles message even if no middleware has been registered ', async () => {
         const bus = new CommandBus();
         await bus.handle('message');

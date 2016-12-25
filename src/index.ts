@@ -9,7 +9,7 @@ export class CommandBus
     {
     }
 
-    async handle(command: Command): Promise<void>
+    async handle(command: Command) : Promise<void>
     {
         const chain = this._middlewares.slice();
         const next = async function() {
@@ -28,5 +28,30 @@ export class CommandBus
 
 export interface Middleware
 {
-    execute(command: Command, next: any): Promise<void>;
+    execute(command: Command, next: any) : Promise<void>;
+}
+
+export type CommandHandler = (command: Command) => void
+
+export type HandlerMap = { [commandId: string] : CommandHandler }
+
+export class CommandHandlerRegistry
+{
+    constructor(private _handlers: HandlerMap = {})
+    {
+    }
+
+    register(commandId: string, handler: CommandHandler) : void
+    {
+        if (this.hasHandlerFor(commandId)) {
+            throw new Error(`Command with id '${commandId}' is already registered.`);
+        }
+        
+        this._handlers[commandId] = handler;
+    }
+
+    hasHandlerFor(commandId: string) : boolean
+    {
+        return this._handlers.hasOwnProperty(commandId);
+    }
 }
