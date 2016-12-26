@@ -10,7 +10,7 @@ export class CommandBus
     {
     }
 
-    async handle(command: Command) : Promise<void>
+    async dispatch(command: Command) : Promise<void>
     {
         const chain = this._middlewares.slice();
         const next = async function() {

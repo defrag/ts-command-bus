@@ -13,7 +13,7 @@ describe('CommandBus', () => {
 
     it('handles message even if no middleware has been registered ', async () => {
         const bus = new CommandBus();
-        await bus.handle(sampleCommand);
+        await bus.dispatch(sampleCommand);
     });
 
     it('executes registered middlewares in order', async () => {
@@ -25,7 +25,7 @@ describe('CommandBus', () => {
             new CallbackMiddleware(cb('Middleware #3')),
         ]);
         
-        await bus.handle(sampleCommand);
+        await bus.dispatch(sampleCommand);
         assert.equal(arr[0], 'Middleware #1');
         assert.equal(arr[1], 'Middleware #2');
         assert.equal(arr[2], 'Middleware #3');
