@@ -26,4 +26,13 @@ describe('CommandHandlerMiddleware', () => {
         assert.equal(true, executed);
     });
 
+    it('returns the handler execution value if provided', async () => {
+        let executed = false;
+        registry.register('c1', (c: any) => 'result');
+        
+        const middleware = new CommandHandlerMiddleware(registry);
+        const result = await middleware.execute(sampleCommand, () => {});
+        assert.equal(result, 'result');
+    });
+
 });

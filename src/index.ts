@@ -10,26 +10,24 @@ export class CommandBus
     {
     }
 
-    async dispatch(command: Command) : Promise<void>
+    async dispatch(command: Command) : Promise<any>
     {
         const chain = this._middlewares.slice();
         const next = async function() {
             const middleware = chain.shift();
-
+            
             if (middleware) {
-                await middleware.execute(command, next);
+                return await middleware.execute(command, next);
             }
-
-            return this;
         };
 
-        await next();
+        return await next();
     }
 }
 
 export interface Middleware
 {
-    execute(command: Command, next: any) : Promise<void>;
+    execute(command: Command, next: any) : Promise<any>;
 }
 
 export class CommandHandlerMiddleware implements Middleware
@@ -38,11 +36,10 @@ export class CommandHandlerMiddleware implements Middleware
     {
     }
 
-    async execute(command: Command, next: any)
+    async execute(command: Command, next: any) : Promise<any>
     {
         const handler = this._registry.getHandlerFor(command.id);
-        await handler(command);
-        await next();
+        return await handler(command);
     }
 }
 
