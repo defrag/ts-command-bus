@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests/*.ts tests/**/*.ts --require ts-node/register"
+    "pretest": "npm run compile",
+    "test": "mocha tests/*.ts tests/**/*.ts --require ts-node/register",
+    "compile": "tsc"
   },
   "keywords": [],
   "author": "",
