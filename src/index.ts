@@ -10,7 +10,7 @@ export class CommandBus
     {
     }
 
-    async dispatch(command: Command) : Promise<any>
+    public async dispatch(command: Command) : Promise<any>
     {
         const chain = this._middlewares.slice();
         const next = async function() {
@@ -36,7 +36,7 @@ export class CommandHandlerMiddleware implements Middleware
     {
     }
 
-    async execute(command: Command, next: any) : Promise<any>
+    public async execute(command: Command, next: any) : Promise<any>
     {
         const handler = this._registry.getHandlerFor(command.id);
         return await handler(command);
@@ -53,7 +53,7 @@ export class CommandHandlerRegistry
     {
     }
 
-    register(commandId: string, handler: CommandHandler) : void
+    public register(commandId: string, handler: CommandHandler) : void
     {
         if (this.hasHandlerFor(commandId)) {
             throw new Error(`Command with id '${commandId}' is already registered.`);
@@ -62,12 +62,12 @@ export class CommandHandlerRegistry
         this._handlers[commandId] = handler;
     }
 
-    hasHandlerFor(commandId: string) : boolean
+    public hasHandlerFor(commandId: string) : boolean
     {
         return this._handlers.hasOwnProperty(commandId);
     }
 
-    getHandlerFor(commandId: string) : CommandHandler
+    public getHandlerFor(commandId: string) : CommandHandler
     {
         return this._handlers[commandId];
     } 
